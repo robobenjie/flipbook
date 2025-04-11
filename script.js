@@ -1,7 +1,33 @@
 document.getElementById('videoInput').addEventListener('change', handleVideoUpload);
 document.getElementById('sheetInput').addEventListener('change', handleSheetUpload);
 
-function handleVideoUpload(event) {
+function showProgress(title, text) {
+    const modal = document.getElementById('progressModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const progressFill = document.getElementById('progressFill');
+    
+    modalTitle.textContent = title;
+    modalText.textContent = text;
+    progressFill.style.width = '0%';
+    modal.classList.add('show');
+}
+
+function updateProgress(percent, text = null) {
+    const progressFill = document.getElementById('progressFill');
+    const modalText = document.getElementById('modalText');
+    
+    progressFill.style.width = `${percent}%`;
+    if (text) modalText.textContent = text;
+}
+
+function hideProgress() {
+    const modal = document.getElementById('progressModal');
+    modal.classList.remove('show');
+}
+
+async function handleVideoUpload(event) {
+    showProgress('Creating Print Sheet', 'Loading video...');
     console.log('Video upload started');
     const file = event.target.files[0];
     const video = document.createElement('video');
@@ -62,6 +88,7 @@ function handleVideoUpload(event) {
     });
 
     video.addEventListener('loadeddata', async () => {
+        updateProgress(20, 'Video loaded, extracting frames...');
         console.log('Video data loaded');
         const duration = video.duration;
         console.log('Video duration:', duration);
@@ -71,12 +98,15 @@ function handleVideoUpload(event) {
         
         // Extract 9 frames sequentially
         for (let i = 0; i < 9; i++) {
-            console.log('Extracting frame', i);
             await extractFrame(video, canvas, context, i * interval, frameGrid);
+            updateProgress(20 + (i + 1) * 8, `Extracting frame ${i + 1} of 9...`);
         }
 
-        // Trigger print after all frames are loaded
-        window.print();
+        updateProgress(100, 'Opening print dialog...');
+        setTimeout(() => {
+            hideProgress();
+            window.print();
+        }, 500);
     });
 
     video.addEventListener('error', (e) => {
@@ -112,6 +142,7 @@ function extractFrame(video, canvas, context, timeOffset, frameGrid) {
 }
 
 async function handleSheetUpload(event) {
+    showProgress('Creating Animation', 'Loading image...');
     console.log('Sheet upload started');
     const file = event.target.files[0];
     const img = new Image();
@@ -202,7 +233,9 @@ async function handleSheetUpload(event) {
                 gifImg.onerror = (e) => console.error('Error loading GIF in img:', e);
                 gifImg.src = URL.createObjectURL(blob);
                 gifContainer.appendChild(gifImg);
+                gifContainer.classList.add('show'); // Show container when GIF is added
                 console.log('GIF added to container');
+                setTimeout(hideProgress, 500);
                 resolve();
             } catch (error) {
                 console.error('Error displaying GIF:', error);
@@ -211,10 +244,11 @@ async function handleSheetUpload(event) {
         });
 
         gif.on('progress', progress => {
-            console.log('GIF rendering progress:', Math.round(progress * 100) + '%');
+            updateProgress(90 + progress * 10, 'Rendering GIF...');
         });
 
         gif.on('error', error => {
+            hideProgress();
             console.error('Error generating GIF:', error);
             reject(error);
         });

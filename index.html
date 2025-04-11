@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Flipbook Maker</h1>
+        <h1>Draw Your Own Gif</h1>
         <label class="upload-button" for="videoInput">
             Print Video Sheet
             <input type="file" id="videoInput" accept="video/*">
@@ -20,6 +20,18 @@
         <div id="frameGrid" class="frame-grid"></div>
         <div id="gifContainer" class="gif-container"></div>
     </div>
+
+    <!-- Add this modal markup -->
+    <div class="modal" id="progressModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Processing...</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p id="modalText">Please wait...</p>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"></script>
     <script src="script.js"></script>
