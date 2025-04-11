@@ -1,0 +1,97 @@
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.upload-button {
+    display: block;
+    margin: 10px auto;
+    padding: 12px 24px;
+    background: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: fit-content;
+}
+
+.upload-button:hover {
+    background: #0056b3;
+}
+
+.upload-button input[type="file"] {
+    display: none;
+}
+
+/* Hide grid in normal view */
+.frame-grid {
+    display: none;
+}
+
+.frame {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border: 1px solid #ccc;
+}
+
+/* Add orientation indicator styles */
+.orientation-indicator {
+    margin: 10px 0;
+    padding: 5px;
+    background: #eee;
+    display: none;
+}
+
+/* Print styles */
+@media print {
+    /* Hide everything except the grid */
+    body * {
+        visibility: hidden;
+        margin: 0;
+        padding: 0;
+    }
+
+    .frame-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.1in;
+        visibility: visible;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: var(--print-width);
+        aspect-ratio: auto;
+        margin: 0;
+        padding: 0;
+        outline: 1px solid red;
+    }
+
+    .frame-grid * {
+        visibility: visible;
+    }
+
+    .frame {
+        border: none;
+        width: 100%;
+        height: 100%;
+    }
+
+    @page {
+        size: var(--print-orientation) letter;
+        margin: 0;
+    }
+}
+
+.gif-container {
+    margin: 20px auto;
+    max-width: 500px;
+}
+
+.gif-container img {
+    max-width: 100%;
+    height: auto;
+} 

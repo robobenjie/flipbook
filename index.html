@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipbook Maker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Flipbook Maker</h1>
+        <label class="upload-button" for="videoInput">
+            Print Video Sheet
+            <input type="file" id="videoInput" accept="video/*">
+        </label>
+        <label class="upload-button" for="sheetInput">
+            Upload Finished Sheet
+            <input type="file" id="sheetInput" accept="image/*" capture="environment">
+        </label>
+        <div id="frameGrid" class="frame-grid"></div>
+        <div id="gifContainer" class="gif-container"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
